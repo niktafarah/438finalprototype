@@ -1,5 +1,3 @@
-
-
 // Declare some color constants
 const colors = {
     red: "#BF616A",
