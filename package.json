@@ -6,7 +6,7 @@
   "scripts": {
     "start": "web-dev-server --node-resolve --open --watch vite",
     "host": "vite --host",
-    "build": "rollup --config vite build",
+    "build": "vite build",
     "deploy": "npm run build && gh-pages -d dist",
     "preview": "vite preview"
   },
