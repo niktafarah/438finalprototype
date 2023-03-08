@@ -1,3 +1,5 @@
+
+
 // Declare some color constants
 const colors = {
     red: "#BF616A",
@@ -12,6 +14,7 @@ const colors = {
     foreground: "#ECEFF4",
     pink: "#ffb6c1",
   };
+  
 
 // Declare sprite variables
 let walls;
@@ -28,13 +31,16 @@ let img;
 let chute;
 
 
+
 // Initialize some params
 let ballSize = 60;
 let ballX = 300; 
 let ballY = 500; 
-
+let timeLimit = 10;
 let finalScore = 0;
 let scoreSize = 32;
+let timer = 10;
+
 
 function preload() {
     img = loadImage('mouse.png');
@@ -68,39 +74,34 @@ function draw() {
         ball.direction = ball.angleTo(mouse);
         ball.speed = 10;
     }
+    
+    drawScore();
+    drawTimer();
 
     
 
-    if (kb.presses('space')) {
-        win.remove();
-        finalScore = 0;
+    if (timer == 0) {
+        drawScore() = false;
+    }
+}
+
+function drawTimer() {
+    textAlign(CENTER, CENTER);
+    textSize(100);
+    fill(colors.grey);
+    text(timer, width/2, height/2);
+
+    if (frameCount % 60 == 0 && timer > 0) { 
+        timer --;
     }
 
-    
-// if (mouse.holding()) {
-    //     ball.x = mouse.x;
-    //     ball.y = mouse.y;
-    //     ball.direction = ball.angleTo(mouse);
-    //     ball.speed = 10;
-    // }
-    // if (ball.collides(netwall)) {
-    //     ball.remove();
-    //     setupBall();
-    //     net.remove();
-    //     netsign.remove();
-    //     setupNet();
-    // }
-
-    // if (ball.collides(floor)) {
-    //     dribble.play();
-    // }
-
-    // if (ball.collides(walls)) {
-    //     dribble.play();
-    // }
-   
-    drawScore();
-}
+    if (timer == 0) {
+        text("GAME OVER", width/2, height*0.7);
+        // text("SCORE:",width/2, height*0.9);
+        console.log(finalScore);
+        return finalScore;
+    }    
+  }
 
 
 function drawScore() {
@@ -115,15 +116,10 @@ function drawScore() {
 
     if (ball.overlaps(netbound2)) {
         finalScore = finalScore + 10;
-        // swish.play();
-        // ball.remove();
-        // setupBall();
-        // net.remove();
-        // netsign.remove();
-        // setupNet();
-        if (finalScore == 50) {
-            win();
-        }
+        // if (finalScore == 50) {
+        //     win();
+        // }
+        return finalScore;
     }
 }
 
@@ -140,15 +136,7 @@ function randomizeY() {
 
 function setupBall() {
     ball = new Sprite();
-    // ball.addImage('mouse',img); 
-    // ball.debug = mouse.pressing();
-    // ball.color = colors.orange;
-    // ball.diameter = 70;
     ball.bounciness = 0.8;
-    // ball.speed = 30;
-    // ball.pos = {x:randomizeX(), y:randomizeY()};
-    // ball.sleeping = true;
-    // ball.mass = 20;
 
     ball.draw = () => {
 		fill(211, 211, 211);
@@ -218,16 +206,9 @@ function setupNetBounds() {
 
     chute = new Sprite (windowWidth, windowHeight/2+160, [windowHeight/3, -200]);
     noStroke();
-    // chute.visible = false;
+    chute.visible = false;
     chute.collider = 'static';
     
-    // netwall = new Sprite ();
-    // netwall.pos = {x:windowWidth-105,y:windowHeight/2+40};
-    // netwall.h = windowHeight/2.5;
-    // netwall.w = 2;
-    // noStroke();
-    // netwall.visible = false;
-    // netwall.collider = 'static';
 
     netbound2 = new Sprite ();
     netbound2.pos = {x:windowWidth,y:windowHeight/3+40};
@@ -239,11 +220,12 @@ function setupNetBounds() {
     netbound2.collider = 'static';
 }
 
-function win() {
-    win = new Sprite ();
-    win.width = 700;
-    win.height = 100;
-    win.text = "You win! Click 'space' to play again.";
-    win.collider = 'static';
-    win.color = colors.foreground; 
-}
+// function win() {
+//     win = new Sprite ();
+//     win.width = 700;
+//     win.height = 100;
+//     win.text = "You win! Click 'space' to play again.";
+//     win.collider = 'static';
+//     win.color = colors.foreground; 
+// }
+

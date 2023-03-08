@@ -1,24 +1,28 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import {
-  getFirestore,
-  collection,
-  addDoc,
-  getDocs,
-  onSnapshot,
-  query,
-  orderBy,
-} from "firebase/firestore";
-import { html, render } from "lit-html";
+    getFirestore,
+    collection,
+    addDoc,
+    getDocs,
+    onSnapshot,
+    query,
+    orderBy,
+  } from "firebase/firestore";
+  import { html, render } from "lit-html";
+
+
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyDGFg3wIM0OJZlTFxtnQyUGuqxsJdm7O-Q",
-  authDomain: "example-db-2f091.firebaseapp.com",
-  projectId: "example-db-2f091",
-  storageBucket: "example-db-2f091.appspot.com",
-  messagingSenderId: "291425588075",
-  appId: "1:291425588075:web:c130d6b1eecdb91edcb22e",
+  apiKey: "AIzaSyBg1oSkWWo2JFvS3rnRhCKiinhsI8JOst8",
+  authDomain: "final-prototype-682b9.firebaseapp.com",
+  projectId: "final-prototype-682b9",
+  storageBucket: "final-prototype-682b9.appspot.com",
+  messagingSenderId: "378274101314",
+  appId: "1:378274101314:web:586fba5e0fc27e842dd5db"
 };
 
 // Initialize Firebase
@@ -26,15 +30,18 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 let messages = [];
+let confirm = 1;
 const messagesRef = collection(db, "messages");
 
 async function sendMessage(message) {
   console.log("Sending a message!");
+
   // Add some data to the messages collection
   try {
     const docRef = await addDoc(collection(db, "messages"), {
-      time: Date.now(),
-      content: message,
+        username: message,
+        time: Date.now(),
+        score: finalScore,
     });
     console.log("Document written with ID: ", docRef.id);
   } catch (e) {
@@ -46,12 +53,17 @@ function handleInput(e) {
   if (e.key == "Enter") {
     sendMessage(e.target.value);
     e.target.value = "";
+    console.log('working');
+    confirm = 10;
+    return confirm;
   }
 }
 
 function view() {
-  return html`<h1>my cool app</h1>
+  return html`<h1>Mooshball</h1>
+    Username:
     <input type="text" @keydown=${handleInput} />
+    <br>High Score: ${finalScore}
     <div id="messages-container">
       ${messages.map((msg) => html`<div class="message">${msg.content}</div>`)}
     </div>`;
