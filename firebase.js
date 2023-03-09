@@ -30,60 +30,55 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 let messages = [];
-let confirm = 1;
 const messagesRef = collection(db, "messages");
 
-async function sendMessage(message) {
-  console.log("Sending a message!");
 
-  // Add some data to the messages collection
-  try {
-    const docRef = await addDoc(collection(db, "messages"), {
-        username: message,
+
+
+async function sendMessage(score) {
+    console.log("Sending a message!");
+    // Add some data to the messages collection
+    try {
+      const docRef = await addDoc(collection(db, "scores"), {
         time: Date.now(),
-        score: finalScore,
-    });
-    console.log("Document written with ID: ", docRef.id);
-  } catch (e) {
-    console.error("Error adding document: ", e);
+        score: final,
+      });
+      console.log("Document written with ID: ", docRef.id);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
   }
-}
+  
+//   
 
-function handleInput(e) {
-  if (e.key == "Enter") {
-    sendMessage(e.target.value);
-    e.target.value = "";
-    console.log('working');
-    confirm = 10;
-    return confirm;
-  }
-}
-
-function view() {
-  return html`<h1>Mooshball</h1>
-    Username:
-    <input type="text" @keydown=${handleInput} />
-    <br>High Score: ${finalScore}
-    <div id="messages-container">
-      ${messages.map((msg) => html`<div class="message">${msg.content}</div>`)}
-    </div>`;
-}
-
-render(view(), document.body);
+//   function handleInput(e) {
+//     if (e.key == "Enter") {
+//       sendMessage(e.target.value);
+//       e.target.value = "";
+//     }
+//   }
+  
+//   function view() {
+//     return html`<h1>my cool app</h1>
+//       <input type="text" @keydown=${handleInput} />
+//       <div id="messages-container">
+//         ${messages.map((msg) => html`<div class="message">${msg.content}</div>`)}
+//       </div>`;
+//   }
+//   render(view(), document.body);
 
 async function getAllMessages() {
   messages = [];
 
   const querySnapshot = await getDocs(
-    query(messagesRef, orderBy("time", "desc"))
-  );
+    query(messagesRef, orderBy("time", "desc")));
   querySnapshot.forEach((doc) => {
     let msgData = doc.data();
     messages.push(msgData);
   });
 
-  console.log(messages);
-  render(view(), document.body);
+//   console.log(messages);
+//   render(view(), document.body);
 }
 
 getAllMessages();

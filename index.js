@@ -19,7 +19,7 @@ const colors = {
 // Declare sprite variables
 let walls;
 let ball;
-let shadow;
+// let shadow;
 let net;
 let netsign;
 let netbound2;
@@ -29,6 +29,8 @@ let randomnumX;
 let randomnumY;
 let img;
 let chute;
+let final;
+
 
 
 
@@ -41,6 +43,8 @@ let finalScore = 0;
 let scoreSize = 32;
 let timer = 10;
 
+
+var screen = 0;
 
 function preload() {
     img = loadImage('mouse.png');
@@ -65,25 +69,102 @@ function setup() {
 
 
 function draw() {
-	clear();
+    clear();
+    if(screen == 0){
+        startScreen()
+        ball.visible = false;
+        net.visible = false;
+        floor.visible = false;
+    } else if(screen == 1) {
+        ball.visible = true;
+        net.visible = true;
+        floor.visible = true;
+        gameOn();
+    } else if(screen == 2) {
+        ball.visible = false;
+        net.visible = false;
+        floor.visible = false;
+        gameOver();
+        return screen;
+    }
+    // if (timer == 0) {
+    //     drawScore() = false;
+    // }
+}
+
+function startScreen(){
+    background(150);
+    // fill(255)
+    textAlign(CENTER);
+text('Mooshball', width/2, 0.5*height/3)
+    text('Instructions', width/2, height / 3)
+    text('1. Try to get the moosh in the hoop.', width/2,1.25*height/3)
+text('2. Click your screen to direct the moosh to the hoop.', width/2,1.5*height/3)
+text('3. Good luck', width/2,1.75*height/3)
+text('Click anywhere to begin', width/2,2.25*height/3)
+    textFont('Georgia')
+    textSize(20)
+    // reset();
+    // resetScore();
+}
+
+function gameOn() {
+    background(colors.background);
+    fill(0);
     net.overlapping(ball);
     netsign.overlapping(ball);
-    background(colors.background);
-
-    if (mouse.presses()) {
-        ball.direction = ball.angleTo(mouse);
-        ball.speed = 10;
-    }
-    
-    drawScore();
-    drawTimer();
-
-    
-
-    if (timer == 0) {
-        drawScore() = false;
-    }
+        
+        if (mouse.presses()) {
+            ball.direction = ball.angleTo(mouse);
+            ball.speed = 10;
+        }
+        drawScore();
+        drawTimer();
+        textAlign(CENTER, CENTER);
+    textSize(100);
+    fill(colors.grey);
+    text(timer, width/2, height/2);
 }
+
+function mousePressed(){
+	if(screen==0){
+  	screen=1;
+  } else if (screen==2) {
+    screen=0;
+  }
+}
+
+function gameOver() {
+    noLoop();
+    background(150)
+    textAlign(CENTER);
+          text('GAME OVER', width / 2, height / 2)
+          text('SCORE:' + finalScore, width / 2, height / 2 + 100)
+
+    fill(255)
+    button = createButton('Restart');
+    button.position(0,0);
+    button.mousePressed(startLoop);
+  
+    // window.sendScore(finalScore);
+    // scoreSent = true;
+
+    // let scores = window.getAllMessages();
+    // console.log(scores);
+  }
+
+//   function startLoop() {
+//     screen=1;
+//     resetScore();
+//     loop();
+//     reset();
+//   }
+
+function startLoop() {
+    screen=1;
+    loop();
+    reset();
+  }
 
 function drawTimer() {
     textAlign(CENTER, CENTER);
@@ -96,10 +177,10 @@ function drawTimer() {
     }
 
     if (timer == 0) {
-        text("GAME OVER", width/2, height*0.7);
-        // text("SCORE:",width/2, height*0.9);
-        console.log(finalScore);
-        return finalScore;
+        screen = 2;
+        let final = finalScore;
+        console.log(final);
+        return final;
     }    
   }
 
@@ -116,9 +197,6 @@ function drawScore() {
 
     if (ball.overlaps(netbound2)) {
         finalScore = finalScore + 10;
-        // if (finalScore == 50) {
-        //     win();
-        // }
         return finalScore;
     }
 }
