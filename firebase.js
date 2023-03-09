@@ -41,7 +41,8 @@ async function sendMessage(final) {
     try {
       const docRef = await addDoc(collection(db, "messages"), {
         time: Date.now(),
-        scores: final,
+        // scores: final,
+        scores: scores,
       });
       console.log("Document written with ID: ", docRef.id);
     } catch (e) {
