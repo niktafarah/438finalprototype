@@ -138,33 +138,17 @@ function gameOver() {
     noLoop();
     background(150)
     textAlign(CENTER);
-          text('GAME OVER', width / 2, height / 2)
-          text('SCORE:' + finalScore, width / 2, height / 2 + 100)
+          text('GAME OVER!', width / 2, height / 2)
+          text('YOUR SCORE:' + finalScore, width / 2, height / 2 + 100)
 
     fill(255)
-    button = createButton('Restart');
-    button.position(0,0);
-    button.mousePressed(startLoop);
-  
-    // window.sendScore(finalScore);
-    // scoreSent = true;
-
-    // let scores = window.getAllMessages();
-    // console.log(scores);
+    screen = 2;
+    window.sendMessage(finalScore);
+    let scores = window.getAllMessages();
+    console.log(scores);
   }
 
-//   function startLoop() {
-//     screen=1;
-//     resetScore();
-//     loop();
-//     reset();
-//   }
 
-function startLoop() {
-    screen=1;
-    loop();
-    reset();
-  }
 
 function drawTimer() {
     textAlign(CENTER, CENTER);

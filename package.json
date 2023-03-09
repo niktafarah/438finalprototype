@@ -7,8 +7,7 @@
     "start": "web-dev-server --node-resolve --open --watch vite",
     "host": "vite --host",
     "build": "rollup --config vite build",
-    // "deploy": "npm run build && gh-pages -d dist",
-    "deploy": "vite build --base=/438finalprototype/ && gh-pages -d dist"
+    "deploy": "vite build --base=/my-cool-project/ && gh-pages -d dist",
     "preview": "vite preview"
   },
   "repository": {
