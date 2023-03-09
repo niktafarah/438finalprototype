@@ -120,7 +120,7 @@ window.draw = () => {
     }
 }
 
-function startScreen(){
+window.startScreen = () =>{
     background(150);
     // fill(255)
     textAlign(CENTER);
@@ -134,7 +134,7 @@ function startScreen(){
     textSize(20)
 }
 
-function gameOn() {
+window.gameOn = () => {
     background(colors.background);
     fill(0);
     net.overlapping(ball);
@@ -152,7 +152,7 @@ function gameOn() {
 }
 
 
-function gameOver() {
+window.gameOver = () => {
     noLoop();
     background(150)
     textAlign(CENTER);
@@ -162,11 +162,11 @@ function gameOver() {
     screen = 2;
     // window.sendMessage(finalScore);
     sendMessage(finalScore);
-    let scores = window.getAllMessages();
+    let scores = getAllMessages();
     console.log(scores);
   }
 
-function drawTimer() {
+window.drawTimer = () =>{
     textAlign(CENTER, CENTER);
     textSize(100);
     fill(colors.grey);
@@ -182,7 +182,7 @@ function drawTimer() {
     }    
   }
 
-function drawScore() {
+window.drawScore = () => {
     textAlign(RIGHT, TOP);
     textSize(scoreSize);
     let wordWidth = textWidth(finalScore);
@@ -197,15 +197,15 @@ function drawScore() {
     }
 }
 
-function randomizeX() {
+window.randomizeX = () => {
     randomnumX = int(random(20,400));
     return randomnumX;
 }
-function randomizeY() {
+window.randomizeY = () => {
     randomnumY = int(random(300,600));
     return randomnumY;
 }
-function setupBall() {
+window.setupBall = () => {
     ball = new Sprite();
     ball.bounciness = 0.8;
     ball.draw = () => {
@@ -218,12 +218,12 @@ function setupBall() {
 	};
 }
 
-function overlap() {
+window.overlap = () => {
         net.overlapping(ball);
         netsign.overlapping(ball);
 }
 
-function setupBounds() {
+window.setupBounds = () => {
     walls = new Sprite(
       [
         [0, 0],
@@ -237,7 +237,7 @@ function setupBounds() {
     walls.color = colors.background;
   }
 
-function setupFloor() {
+window.setupFloor = () => {
     floor = new Sprite ();
     floor.color = colors.pink;
     floor.y = windowHeight;
@@ -246,7 +246,7 @@ function setupFloor() {
     floor.collider = 'static';
 }
 
-function setupNet() {
+window.setupNet = () => {
     net = new Sprite ();
     net.color = colors.pink;
     net.w = 200;
@@ -263,7 +263,7 @@ function setupNet() {
     netsign.visible = false;
 }
 
-function setupNetBounds() {
+window.setupNetBounds = () => {
     netbound = new Sprite ();
     netbound.pos = {x:windowWidth-100,y:windowHeight/3+110};
     netbound.h = windowHeight/4;
