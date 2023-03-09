@@ -80,7 +80,7 @@ async function getAllMessages() {
   });
 
   console.log(messages);
-  render(view(), document.body);
+//   render(view(), document.body);
 }
 window.getAllMessages=getAllMessages;
 
