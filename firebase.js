@@ -1,4 +1,3 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import {
     getFirestore,
@@ -12,10 +11,6 @@ import {
   import { html, render } from "lit-html";
 
 
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBg1oSkWWo2JFvS3rnRhCKiinhsI8JOst8",
   authDomain: "final-prototype-682b9.firebaseapp.com",
@@ -32,10 +27,7 @@ const db = getFirestore(app);
 let messages = [];
 const messagesRef = collection(db, "scores");
 
-
-
-
-async function sendMessage(final) {
+ async function sendMessage(final) {
     console.log("Sending a message!");
     // Add some data to the messages collection
     try {
@@ -47,29 +39,12 @@ async function sendMessage(final) {
     } catch (e) {
       console.error("Error adding document: ", e);
     }
+    // window.sendMessage=sendMessage
   }
   window.sendMessage=sendMessage
 
-  
 
-
-//   function handleInput(e) {
-//     if (e.key == "Enter") {
-//       sendMessage(e.target.value);
-//       e.target.value = "";
-//     }
-//   }
-  
-//   function view() {
-//     return html`<h1>my cool app</h1>
-//       <input type="text" @keydown=${handleInput} />
-//       <div id="messages-container">
-//         ${messages.map((msg) => html`<div class="message">${msg.content}</div>`)}
-//       </div>`;
-//   }
-//   render(view(), document.body);
-
-async function getAllMessages() {
+ async function getAllMessages() {
   messages = [];
 
   const querySnapshot = await getDocs(
@@ -80,7 +55,6 @@ async function getAllMessages() {
   });
 
   console.log(messages);
-//   render(view(), document.body);
 }
 window.getAllMessages=getAllMessages;
 

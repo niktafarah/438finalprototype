@@ -1,31 +1,3 @@
-import { initializeApp } from "firebase/app";
-import {
-    getFirestore,
-    collection,
-    addDoc,
-    getDocs,
-    onSnapshot,
-    query,
-    orderBy,
-  } from "firebase/firestore";
-//   import { html, render } from "lit-html";
-
-const firebaseConfig = {
-    apiKey: "AIzaSyBg1oSkWWo2JFvS3rnRhCKiinhsI8JOst8",
-    authDomain: "final-prototype-682b9.firebaseapp.com",
-    projectId: "final-prototype-682b9",
-    storageBucket: "final-prototype-682b9.appspot.com",
-    messagingSenderId: "378274101314",
-    appId: "1:378274101314:web:586fba5e0fc27e842dd5db"
-  };
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-let messages = [];
-const messagesRef = collection(db, "scores");
-
 
 // Declare some color constants
 const colors = {
@@ -48,7 +20,6 @@ let walls;
 let ball;
 let net;
 let netsign;
-let netbound;
 let netbound2;
 let holder;
 let netwall;
@@ -74,10 +45,11 @@ var screen = 0;
 
 
 
-window.preload = () => {
+function preload() {
     img = loadImage('mouse.png');
 }
-window.setup = () =>  {
+
+function setup() {
     new Canvas(windowWidth, windowHeight);
     world.gravity.y = 10;
     setupBounds();
@@ -91,15 +63,8 @@ window.setup = () =>  {
     img.resize(50,50);
 }
 
-window.mousePressed = () => {
-	if(screen==0){
-  	screen=1;
-  } else if (screen==2) {
-    screen=0;
-  }
-}
 
-window.draw = () => {
+function draw() {
     clear();
     if(screen == 0){
         startScreen()
@@ -151,6 +116,13 @@ function gameOn() {
     text(timer, width/2, height/2);
 }
 
+function mousePressed(){
+	if(screen==0){
+  	screen=1;
+  } else if (screen==2) {
+    screen=0;
+  }
+}
 
 function gameOver() {
     noLoop();
@@ -160,8 +132,7 @@ function gameOver() {
         text('YOUR SCORE:' + finalScore, width / 2, height / 2 + 100)
     fill(255)
     screen = 2;
-    // window.sendMessage(finalScore);
-    sendMessage(finalScore);
+    window.sendMessage(finalScore);
     let scores = window.getAllMessages();
     console.log(scores);
   }
@@ -288,45 +259,3 @@ function setupNetBounds() {
     netbound2.collider = 'static';
 }
 
-async function sendMessage(final) {
-    console.log("Sending a message!");
-    // Add some data to the messages collection
-    try {
-      const docRef = await addDoc(collection(db, "messages"), {
-        time: Date.now(),
-        scores: final,
-      });
-      console.log("Document written with ID: ", docRef.id);
-    } catch (e) {
-      console.error("Error adding document: ", e);
-    }
-    // window.sendMessage=sendMessage
-  }
-  sendMessage();
-
-
- async function getAllMessages() {
-  messages = [];
-
-  const querySnapshot = await getDocs(
-    query(messagesRef, orderBy("time", "desc")));
-  querySnapshot.forEach((doc) => {
-    let msgData = doc.data();
-    messages.push(msgData);
-  });
-
-  console.log(messages);
-}
-getAllMessages();
-
-
-onSnapshot(
-  collection(db, "messages"),
-  (snapshot) => {
-    console.log("snap", snapshot);
-    getAllMessages();
-  },
-  (error) => {
-    console.error(error);
-  }
-);
