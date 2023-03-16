@@ -6,8 +6,8 @@
   "scripts": {
     "start": "web-dev-server --node-resolve --open --watch vite",
     "host": "vite --host",
-    "build": "rollup --config vite build",
-    "deploy": "vite build --base=/438finalprototype/ && gh-pages -d dist",
+    "build": "rollup --config",
+    "deploy": "rollup --config  && gh-pages -d dist",
     "preview": "vite preview"
   },
   "repository": {

@@ -2,14 +2,14 @@ import { nodeResolve } from "@rollup/plugin-node-resolve";
 import copy from "rollup-plugin-copy";
 
 module.exports = {
-  input: "index.js",
+  input: "firebase.js",
   output: {
     dir: "dist",
   },
   treeshake:false,
   plugins: [
     copy({
-      targets: [{ src: ["index.html"], dest: "dist" }],
+      targets: [{ src: ["index.js", "style.css", "mouse.png"], dest: "dist" }],
     }),
     nodeResolve(),
   ],

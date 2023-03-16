@@ -25,14 +25,14 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 let messages = [];
-const messagesRef = collection(db, "scores");
+const messagesRef = collection(db, "messages");
 
  async function sendMessage(final) {
     console.log("Sending a message!");
     // Add some data to the messages collection
     try {
       const docRef = await addDoc(collection(db, "messages"), {
-        time: Date.now(),
+        // time: Date.now(),
         scores: final,
       });
       console.log("Document written with ID: ", docRef.id);
@@ -41,20 +41,24 @@ const messagesRef = collection(db, "scores");
     }
     // window.sendMessage=sendMessage
   }
-  window.sendMessage=sendMessage
+  window.sendMessage=sendMessage;
 
 
  async function getAllMessages() {
-  messages = [];
-
+  var messages = [];
+  var returnText = [];
   const querySnapshot = await getDocs(
-    query(messagesRef, orderBy("time", "desc")));
+    query(messagesRef, orderBy("scores", "desc")));
   querySnapshot.forEach((doc) => {
     let msgData = doc.data();
     messages.push(msgData);
   });
 
   console.log(messages);
+  console.log("testing");
+  messages.forEach (entry => {returnText.push(entry.scores)});
+  console.log("returnText" + returnText);
+  return returnText;
 }
 window.getAllMessages=getAllMessages;
 

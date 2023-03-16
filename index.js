@@ -1,31 +1,3 @@
-import { initializeApp } from "firebase/app";
-import {
-    getFirestore,
-    collection,
-    addDoc,
-    getDocs,
-    onSnapshot,
-    query,
-    orderBy,
-  } from "firebase/firestore";
-//   import { html, render } from "lit-html";
-
-const firebaseConfig = {
-    apiKey: "AIzaSyBg1oSkWWo2JFvS3rnRhCKiinhsI8JOst8",
-    authDomain: "final-prototype-682b9.firebaseapp.com",
-    projectId: "final-prototype-682b9",
-    storageBucket: "final-prototype-682b9.appspot.com",
-    messagingSenderId: "378274101314",
-    appId: "1:378274101314:web:586fba5e0fc27e842dd5db"
-  };
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-let messages = [];
-const messagesRef = collection(db, "scores");
-
 
 // Declare some color constants
 const colors = {
@@ -48,7 +20,6 @@ let walls;
 let ball;
 let net;
 let netsign;
-let netbound;
 let netbound2;
 let holder;
 let netwall;
@@ -57,6 +28,7 @@ let randomnumY;
 let img;
 let chute;
 let final;
+let hiScores;
 
 
 
@@ -68,16 +40,17 @@ let ballY = 500;
 let timeLimit = 10;
 let finalScore = 0;
 let scoreSize = 32;
-let timer = 10;
+let timer = 3;
 
 var screen = 0;
 
 
 
-window.preload = () => {
+function preload() {
     img = loadImage('mouse.png');
 }
-window.setup = () =>  {
+
+function setup() {
     new Canvas(windowWidth, windowHeight);
     world.gravity.y = 10;
     setupBounds();
@@ -91,18 +64,11 @@ window.setup = () =>  {
     img.resize(50,50);
 }
 
-window.mousePressed = () => {
-	if(screen==0){
-  	screen=1;
-  } else if (screen==2) {
-    screen=0;
-  }
-}
 
-window.draw = () => {
+function draw() {
     clear();
     if(screen == 0){
-        startScreen()
+        startScreen();
         ball.visible = false;
         net.visible = false;
         floor.visible = false;
@@ -111,30 +77,33 @@ window.draw = () => {
         net.visible = true;
         floor.visible = true;
         gameOn();
+        if (kb.presses('space')) {
+            console.log('screen 1');
+        }
     } else if(screen == 2) {
         ball.visible = false;
         net.visible = false;
         floor.visible = false;
         gameOver();
-        return screen;
+        // hiScores.forEach(entry => { text(entry.name)});
     }
 }
 
-window.startScreen = () =>{
-    background(150);
-    // fill(255)
+function startScreen(){
+    background(colors.background);
     textAlign(CENTER);
-    text('Mooshball', width/2, 0.5*height/3)
-    text('Instructions', width/2, height / 3)
-    text('1. Try to get the moosh in the hoop.', width/2,1.25*height/3)
-    text('2. Click your screen to direct the moosh to the hoop.', width/2,1.5*height/3)
-    text('3. Good luck', width/2,1.75*height/3)
-    text('Click anywhere to begin', width/2,2.25*height/3)
-    textFont('Georgia')
-    textSize(20)
+    textSize(50);
+    text('Mooshball', width/2, 0.5*height/3);
+    textSize(30);
+    text('Instructions:', width/2, height / 3);
+    text('1. Try to get the moosh in the hoop.', width/2,1.25*height/3);
+    text('2. Click your screen to direct the moosh to the hoop.', width/2,1.5*height/3);
+    text('3. Good luck!', width/2,1.75*height/3);
+    text('Click anywhere to begin', width/2,2.25*height/3);
+    textFont('Georgia');
 }
 
-window.gameOn = () => {
+function gameOn() {
     background(colors.background);
     fill(0);
     net.overlapping(ball);
@@ -151,22 +120,34 @@ window.gameOn = () => {
     text(timer, width/2, height/2);
 }
 
+function mousePressed(){
+	if(screen==0){
+  	screen=1;
+  } 
+}
 
-window.gameOver = () => {
+function gameOver() {
     noLoop();
-    background(150)
+    background(colors.background);
+    window.sendMessage(finalScore);
+    // let scores = window.getAllMessages();
+    // let hiScores = window.getAllMessages();
     textAlign(CENTER);
-        text('GAME OVER!', width / 2, height / 2)
-        text('YOUR SCORE:' + finalScore, width / 2, height / 2 + 100)
-    fill(255)
-    screen = 2;
-    // window.sendMessage(finalScore);
-    sendMessage(finalScore);
-    let scores = getAllMessages();
-    console.log(scores);
+        text('GAME OVER!', width / 2, height / 2);
+        text('YOUR SCORE:' + finalScore, width / 2, height / 2 + 100);
+    var hiScores = [];
+    window.getAllMessages().then((value) => {
+        hiScores = value;
+        textSize(20);
+        // console.log("testing Value" + value);   
+        text("Leadership Board", width / 2, height / 2 + 200);
+        // textAlign(TOP);
+        text(hiScores[0] + "\n" + hiScores[1] + "\n" + hiScores[2], width / 2, height / 2 + 250);
+      });
+
   }
 
-window.drawTimer = () =>{
+function drawTimer() {
     textAlign(CENTER, CENTER);
     textSize(100);
     fill(colors.grey);
@@ -182,7 +163,7 @@ window.drawTimer = () =>{
     }    
   }
 
-window.drawScore = () => {
+function drawScore() {
     textAlign(RIGHT, TOP);
     textSize(scoreSize);
     let wordWidth = textWidth(finalScore);
@@ -197,15 +178,15 @@ window.drawScore = () => {
     }
 }
 
-window.randomizeX = () => {
+function randomizeX() {
     randomnumX = int(random(20,400));
     return randomnumX;
 }
-window.randomizeY = () => {
+function randomizeY() {
     randomnumY = int(random(300,600));
     return randomnumY;
 }
-window.setupBall = () => {
+function setupBall() {
     ball = new Sprite();
     ball.bounciness = 0.8;
     ball.draw = () => {
@@ -218,12 +199,12 @@ window.setupBall = () => {
 	};
 }
 
-window.overlap = () => {
+function overlap() {
         net.overlapping(ball);
         netsign.overlapping(ball);
 }
 
-window.setupBounds = () => {
+function setupBounds() {
     walls = new Sprite(
       [
         [0, 0],
@@ -237,7 +218,7 @@ window.setupBounds = () => {
     walls.color = colors.background;
   }
 
-window.setupFloor = () => {
+function setupFloor() {
     floor = new Sprite ();
     floor.color = colors.pink;
     floor.y = windowHeight;
@@ -246,7 +227,7 @@ window.setupFloor = () => {
     floor.collider = 'static';
 }
 
-window.setupNet = () => {
+function setupNet() {
     net = new Sprite ();
     net.color = colors.pink;
     net.w = 200;
@@ -263,7 +244,7 @@ window.setupNet = () => {
     netsign.visible = false;
 }
 
-window.setupNetBounds = () => {
+function setupNetBounds() {
     netbound = new Sprite ();
     netbound.pos = {x:windowWidth-100,y:windowHeight/3+110};
     netbound.h = windowHeight/4;
@@ -288,45 +269,3 @@ window.setupNetBounds = () => {
     netbound2.collider = 'static';
 }
 
-async function sendMessage(final) {
-    console.log("Sending a message!");
-    // Add some data to the messages collection
-    try {
-      const docRef = await addDoc(collection(db, "messages"), {
-        time: Date.now(),
-        scores: final,
-      });
-      console.log("Document written with ID: ", docRef.id);
-    } catch (e) {
-      console.error("Error adding document: ", e);
-    }
-    // window.sendMessage=sendMessage
-  }
-  sendMessage();
-
-
- async function getAllMessages() {
-  messages = [];
-
-  const querySnapshot = await getDocs(
-    query(messagesRef, orderBy("time", "desc")));
-  querySnapshot.forEach((doc) => {
-    let msgData = doc.data();
-    messages.push(msgData);
-  });
-
-  console.log(messages);
-}
-getAllMessages();
-
-
-onSnapshot(
-  collection(db, "messages"),
-  (snapshot) => {
-    console.log("snap", snapshot);
-    getAllMessages();
-  },
-  (error) => {
-    console.error(error);
-  }
-);
