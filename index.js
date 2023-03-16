@@ -78,14 +78,16 @@ function draw() {
         floor.visible = true;
         gameOn();
         if (kb.presses('space')) {
-            console.log('screen 1');
+            console.log('its finally working');
         }
     } else if(screen == 2) {
         ball.visible = false;
         net.visible = false;
         floor.visible = false;
         gameOver();
-        // hiScores.forEach(entry => { text(entry.name)});
+        // if (kb.presses('space')) {
+        //     console.log('its finally working');
+        // }
     }
 }
 
@@ -127,6 +129,7 @@ function mousePressed(){
 }
 
 function gameOver() {
+    screen = 2;
     noLoop();
     background(colors.background);
     window.sendMessage(finalScore);
