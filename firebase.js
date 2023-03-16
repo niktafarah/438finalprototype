@@ -24812,14 +24812,14 @@ const app = initializeApp(firebaseConfig);
 const db = uh(app);
 
 let messages = [];
-const messagesRef = Ja(db, "scores");
+const messagesRef = Ja(db, "messages");
 
  async function sendMessage(final) {
     console.log("Sending a message!");
     // Add some data to the messages collection
     try {
       const docRef = await Xl(Ja(db, "messages"), {
-        time: Date.now(),
+        // time: Date.now(),
         scores: final,
       });
       console.log("Document written with ID: ", docRef.id);
@@ -24832,16 +24832,20 @@ const messagesRef = Ja(db, "scores");
 
 
  async function getAllMessages() {
-  messages = [];
-
+  var messages = [];
+  var returnText = [];
   const querySnapshot = await zl(
-    ol(messagesRef, dl("time", "desc")));
+    ol(messagesRef, dl("scores", "desc")));
   querySnapshot.forEach((doc) => {
     let msgData = doc.data();
     messages.push(msgData);
   });
 
   console.log(messages);
+  console.log("testing");
+  messages.forEach (entry => {returnText.push(entry.scores);});
+  console.log("returnText" + returnText);
+  return returnText;
 }
 window.getAllMessages=getAllMessages;
 

@@ -28,6 +28,7 @@ let randomnumY;
 let img;
 let chute;
 let final;
+let hiScores;
 
 
 
@@ -39,7 +40,7 @@ let ballY = 500;
 let timeLimit = 10;
 let finalScore = 0;
 let scoreSize = 32;
-let timer = 10;
+let timer = 3;
 
 var screen = 0;
 
@@ -67,7 +68,7 @@ function setup() {
 function draw() {
     clear();
     if(screen == 0){
-        startScreen()
+        startScreen();
         ball.visible = false;
         net.visible = false;
         floor.visible = false;
@@ -76,27 +77,32 @@ function draw() {
         net.visible = true;
         floor.visible = true;
         gameOn();
+        if (kb.presses('space')) {
+            console.log('its finally working');
+        }
     } else if(screen == 2) {
         ball.visible = false;
         net.visible = false;
         floor.visible = false;
         gameOver();
-        return screen;
+        // if (kb.presses('space')) {
+        //     console.log('its finally working');
+        // }
     }
 }
 
 function startScreen(){
-    background(150);
-    // fill(255)
+    background(colors.background);
     textAlign(CENTER);
-    text('Mooshball', width/2, 0.5*height/3)
-    text('Instructions', width/2, height / 3)
-    text('1. Try to get the moosh in the hoop.', width/2,1.25*height/3)
-    text('2. Click your screen to direct the moosh to the hoop.', width/2,1.5*height/3)
-    text('3. Good luck', width/2,1.75*height/3)
-    text('Click anywhere to begin', width/2,2.25*height/3)
-    textFont('Georgia')
-    textSize(20)
+    textSize(50);
+    text('Mooshball', width/2, 0.5*height/3);
+    textSize(30);
+    text('Instructions:', width/2, height / 3);
+    text('1. Try to get the moosh in the hoop.', width/2,1.25*height/3);
+    text('2. Click your screen to direct the moosh to the hoop.', width/2,1.5*height/3);
+    text('3. Good luck!', width/2,1.75*height/3);
+    text('Click anywhere to begin', width/2,2.25*height/3);
+    textFont('Georgia');
 }
 
 function gameOn() {
@@ -119,22 +125,29 @@ function gameOn() {
 function mousePressed(){
 	if(screen==0){
   	screen=1;
-  } else if (screen==2) {
-    screen=0;
-  }
+  } 
 }
 
 function gameOver() {
-    noLoop();
-    background(150)
-    textAlign(CENTER);
-        text('GAME OVER!', width / 2, height / 2)
-        text('YOUR SCORE:' + finalScore, width / 2, height / 2 + 100)
-    fill(255)
     screen = 2;
+    noLoop();
+    background(colors.background);
     window.sendMessage(finalScore);
-    let scores = window.getAllMessages();
-    console.log(scores);
+    // let scores = window.getAllMessages();
+    // let hiScores = window.getAllMessages();
+    textAlign(CENTER);
+        text('GAME OVER!', width / 2, height / 2);
+        text('YOUR SCORE:' + finalScore, width / 2, height / 2 + 100);
+    var hiScores = [];
+    window.getAllMessages().then((value) => {
+        hiScores = value;
+        textSize(20);
+        // console.log("testing Value" + value);   
+        text("Leadership Board", width / 2, height / 2 + 200);
+        // textAlign(TOP);
+        text(hiScores[0] + "\n" + hiScores[1] + "\n" + hiScores[2], width / 2, height / 2 + 250);
+      });
+
   }
 
 function drawTimer() {
