@@ -12,12 +12,12 @@ import {
 
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBg1oSkWWo2JFvS3rnRhCKiinhsI8JOst8",
-  authDomain: "final-prototype-682b9.firebaseapp.com",
-  projectId: "final-prototype-682b9",
-  storageBucket: "final-prototype-682b9.appspot.com",
-  messagingSenderId: "378274101314",
-  appId: "1:378274101314:web:586fba5e0fc27e842dd5db"
+  apiKey: "AIzaSyDtAUq9WF9IJIgqvyKbiGrcpQxoxmCpiKM",
+  authDomain: "final438-31e1e.firebaseapp.com",
+  projectId: "final438-31e1e",
+  storageBucket: "final438-31e1e.appspot.com",
+  messagingSenderId: "175908333755",
+  appId: "1:175908333755:web:04d54931fa563bb9a9a19e"
 };
 
 // Initialize Firebase
@@ -54,10 +54,10 @@ const messagesRef = collection(db, "messages");
     messages.push(msgData);
   });
 
-  console.log(messages);
-  console.log("testing");
+  // console.log(messages);
+  // console.log("testing");
   messages.forEach (entry => {returnText.push(entry.scores)});
-  console.log("returnText" + returnText);
+  // console.log("returnText" + returnText);
   return returnText;
 }
 window.getAllMessages=getAllMessages;

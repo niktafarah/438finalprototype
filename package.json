@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/niktafarah/438finalprototype#readme",
   "dependencies": {
-    "firebase": "^9.17.2",
+    "firebase": "^9.18.0",
     "lit-html": "^2.6.1",
     "three": "^0.150.1"
   },

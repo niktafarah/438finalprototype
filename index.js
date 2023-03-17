@@ -1,3 +1,4 @@
+// import { Sprite } from "three";
 
 // Declare some color constants
 const colors = {
@@ -29,8 +30,7 @@ let img;
 let chute;
 let final;
 let hiScores;
-
-
+let mybutton;
 
 
 // Initialize some params
@@ -40,10 +40,9 @@ let ballY = 500;
 let timeLimit = 10;
 let finalScore = 0;
 let scoreSize = 32;
-let timer = 3;
+let timer = 20;
 
 var screen = 0;
-
 
 
 function preload() {
@@ -62,6 +61,7 @@ function setup() {
     randomizeX();
     randomizeY();
     img.resize(50,50);
+    restart();
 }
 
 
@@ -76,22 +76,19 @@ function draw() {
         ball.visible = true;
         net.visible = true;
         floor.visible = true;
+        mybutton.overlapping(ball);
         gameOn();
-        if (kb.presses('space')) {
-            console.log('its finally working');
-        }
-    } else if(screen == 2) {
+    } 
+    else if(screen = 2) {
         ball.visible = false;
         net.visible = false;
         floor.visible = false;
         gameOver();
-        // if (kb.presses('space')) {
-        //     console.log('its finally working');
-        // }
-    }
+    } 
 }
 
 function startScreen(){
+    mybutton.visible = false;
     background(colors.background);
     textAlign(CENTER);
     textSize(50);
@@ -106,6 +103,7 @@ function startScreen(){
 }
 
 function gameOn() {
+    mybutton.visible = false;
     background(colors.background);
     fill(0);
     net.overlapping(ball);
@@ -126,30 +124,47 @@ function mousePressed(){
 	if(screen==0){
   	screen=1;
   } 
+//   else if (mybutton) {
+//     gameOn();
+//   }
 }
 
+
 function gameOver() {
-    screen = 2;
+    // mybutton.visible = true;
     noLoop();
     background(colors.background);
     window.sendMessage(finalScore);
     // let scores = window.getAllMessages();
     // let hiScores = window.getAllMessages();
-    textAlign(CENTER);
-        text('GAME OVER!', width / 2, height / 2);
-        text('YOUR SCORE:' + finalScore, width / 2, height / 2 + 100);
+    // textAlign(CENTER);
+        textSize(70);
+        text('GAME OVER!', width / 2, 0.5*height/3);
+        textSize(40);
+        text('YOUR SCORE:' + finalScore, width / 2, height/4);
     var hiScores = [];
     window.getAllMessages().then((value) => {
         hiScores = value;
-        textSize(20);
+        textSize(30);
         // console.log("testing Value" + value);   
-        text("Leadership Board", width / 2, height / 2 + 200);
+        text("Leadership Board", width / 2, height / 3+ 100);
         // textAlign(TOP);
-        text(hiScores[0] + "\n" + hiScores[1] + "\n" + hiScores[2], width / 2, height / 2 + 250);
+        text(hiScores[0] + "\n" + hiScores[1] + "\n" + hiScores[2], width / 2, height / 3 + 200);
       });
-
   }
 
+ 
+function restart() {
+    mybutton = new Sprite();
+    mybutton.color = colors.pink;
+    mybutton.textSize = 30;
+    mybutton.text = "Want to play again?";
+    mybutton.w = 400;
+    mybutton.h = 100;
+    mybutton.collider = 'static';
+    mybutton.pos = {x:windowWidth/2, y:windowHeight/2.5};
+}
+  
 function drawTimer() {
     textAlign(CENTER, CENTER);
     textSize(100);
@@ -270,5 +285,5 @@ function setupNetBounds() {
     ball.overlaps(netbound2);
     netbound2.visible = false;
     netbound2.collider = 'static';
-}
 
+}
